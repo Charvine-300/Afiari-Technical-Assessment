@@ -1,4 +1,5 @@
 import React from 'react';
+import 'animate.css';
 import styled from 'styled-components';
 import Text from '../styles/Text';
 import Flexbox from '../styles/Flexbox';
@@ -29,7 +30,7 @@ function Modal({ alertItem, setModal }: ModalProps) {
   }
 
   return (
-    <AlertBox justify='center' align='center' direction='row' Landdirect='row'>
+    <AlertBox justify='center' align='center' direction='row' Landdirect='row' className='animate__animated animate__zoomIn animate__delay-2s"'>
       <Container margin='0' Bigmargin='0%' width='200px' padding='20px' Landwidth='300px' Bigwidth='400px'>
         <Text as='h1' size='20px' align='center' weight='bolder' theme={true} Bigsize='20px'>
           Alert!
