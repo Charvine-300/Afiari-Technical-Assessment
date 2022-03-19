@@ -68,6 +68,7 @@ const ArrowBox: CSSProperties = {
 }
 
 function Input({countryVal, setModal, setAlertItem, setStateVal, stateVal, setCityVal, cityVal}: CountryProps) {
+  const [countryName, setCountryName] = useState('');
   const [country, setCountry] = useState(false);
   const [state, setState] = useState(false);
   const [city, setCity] = useState(false);
@@ -120,9 +121,20 @@ function Input({countryVal, setModal, setAlertItem, setStateVal, stateVal, setCi
     }
   }
 
+  function getImage(stateVal: any) {
+    fetch('https://countriesnow.space/api/v0.1/countries/flag/images', {
+      method: 'POST',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({iso2: `${stateVal.iso2}`})
+    })
+    .then(res => res.json())
+    .then(info => {
+      console.log(info)
+      setFlagIcon(info.data.flag);
+    })
+  }
+
   function selectCountry(e: any) {
-    console.log(e);
-    setFlagIcon(e.target.textContent);
     setCountry(false);
     fetch('https://countriesnow.space/api/v0.1/countries/states', {
       method: 'POST',
@@ -133,6 +145,9 @@ function Input({countryVal, setModal, setAlertItem, setStateVal, stateVal, setCi
     .then(data => {
       console.log(data)
       setStateVal(data.data);
+      console.log(stateVal);
+      setCountryName(e.target.textContent);
+      getImage(stateVal);
     })
   }
 
@@ -142,7 +157,7 @@ function Input({countryVal, setModal, setAlertItem, setStateVal, stateVal, setCi
     fetch('https://countriesnow.space/api/v0.1/countries/cities', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({country: `${e.target.textContent}`})
+      body: JSON.stringify({country: `${countryName}`, state: `${e.target.textContent}`})
     })
     .then(response => response.json())
     .then(data => {
@@ -179,7 +194,6 @@ function Input({countryVal, setModal, setAlertItem, setStateVal, stateVal, setCi
             <Dropdown>
               {countryVal.map(flag => (
                 <li style={ListItem} key={flag.iso2} onClick={(e) => {selectCountry(e)}} >
-                  <img src={flag.flag} title={flag.name} style={Flag} />
                   {flag.name}
                 </li>
               ))}
@@ -189,17 +203,19 @@ function Input({countryVal, setModal, setAlertItem, setStateVal, stateVal, setCi
           <Text style={Titles} size='13px' align='left' weight='600' theme={false} Bigsize='13px'>
             Country
           </Text>
-          <img src={flagIcon} style={Flag} />
+          <img src={flagIcon} style={Flag} alt={flagIcon} />
         </div>
         <div style={InputForm}>
           {
             state && 
             <Dropdown>
-              {stateVal.states.map(state => (
-                <li style={ListItem} key={state.state_code} onClick={(e) => {selectState(e)}}>
-                  {state.name} 
-                </li>
-              ))}
+              {
+                stateVal.states.map(state => (
+                  <li style={ListItem} key={state.state_code} onClick={(e: any) => {selectState(e)}}>
+                    {state.name} 
+                  </li>
+                )
+              )}
             </Dropdown>
           }
           <img src={Arrow} alt='Arrow icon' style={ArrowBox} onClick={stateList} />

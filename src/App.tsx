@@ -31,7 +31,7 @@ const BackImage = styled(Flexbox)`
 function App() {
   const [modal, setModal] = useState(false);
   const [stateVal, setStateVal]: any = useState();
-  const [cityVal, setCityVal] = useState([]);
+  const [cityVal, setCityVal]: any = useState();
   const [alertItem, setAlertItem] = useState('');
   const [countryVal, setCountryVal] = useState([]);
   

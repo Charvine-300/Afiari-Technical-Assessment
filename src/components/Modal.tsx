@@ -30,8 +30,8 @@ function Modal({ alertItem, setModal }: ModalProps) {
   }
 
   return (
-    <AlertBox justify='center' align='center' direction='row' Landdirect='row' className='animate__animated animate__zoomIn'>
-      <Container margin='0' Bigmargin='0%' width='200px' padding='20px' Landwidth='300px' Bigwidth='400px'>
+    <AlertBox justify='center' align='center' direction='row' Landdirect='row' className='animate__animated animate__fadeIn'>
+      <Container margin='0' Bigmargin='0%' width='200px' padding='20px' Landwidth='300px' Bigwidth='400px' className='animate__animated animate__zoomIn'>
         <Text as='h1' size='20px' align='center' weight='bolder' theme={true} Bigsize='20px'>
           Alert!
         </Text>
