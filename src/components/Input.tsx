@@ -117,25 +117,16 @@ function Input({countryVal, setModal, setAlertItem, setStateVal, stateVal, setCi
       setAlertItem('Choose a City to continue');
     }
     else if (cityName !== '') {
+
     
     }
   }
 
-  function getImage(stateVal: any) {
-    fetch('https://countriesnow.space/api/v0.1/countries/flag/images', {
-      method: 'POST',
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({iso2: `${stateVal.iso2}`})
-    })
-    .then(res => res.json())
-    .then(info => {
-      console.log(info)
-      setFlagIcon(info.data.flag);
-    })
-  }
 
   function selectCountry(e: any) {
     setCountry(false);
+    setCountryName(e.target.textContent);
+
     fetch('https://countriesnow.space/api/v0.1/countries/states', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
@@ -145,9 +136,17 @@ function Input({countryVal, setModal, setAlertItem, setStateVal, stateVal, setCi
     .then(data => {
       console.log(data)
       setStateVal(data.data);
-      console.log(stateVal);
-      setCountryName(e.target.textContent);
-      getImage(stateVal);
+      
+      return fetch('https://countriesnow.space/api/v0.1/countries/flag/images', {
+        method: 'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({country: `${e.target.textContent}`})
+      })
+    })
+    .then(res => res.json())
+    .then(info => {
+      console.log(info)
+      setFlagIcon(info.data.flag);
     })
   }
 
