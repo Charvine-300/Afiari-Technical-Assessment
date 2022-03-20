@@ -4,6 +4,7 @@ import Container from '../styles/Container';
 import Button from '../styles/Button';
 import Dropdown from '../styles/Dropdown';
 import Arrow from '../img/down-arrow.svg';
+import Loading from '../img/loading.svg';
 
 interface CountryProps {
   countryVal: {
@@ -26,6 +27,17 @@ interface CountryProps {
   },
   setCityVal: any,
   cityVal: string[]
+  email: string,
+  setEmail: any,
+  countryName: string,
+  setCountryName: any,
+  stateName: string,
+  setStateName: any,
+  cityName: string,
+  setCityName: any,
+  submitForm: any,
+  flagIcon: string,
+  setFlagIcon: any,
 }
 
 const Titles: CSSProperties = {
@@ -43,7 +55,7 @@ const ListItem: CSSProperties = {
   fontSize: '13px',
   margin: '0px',
   fontWeight: 'lighter',
-  listStyleType: 'none',
+  listStyleType: 'disc',
   textTransform: 'capitalize',
   cursor: 'pointer',
 }
@@ -67,15 +79,32 @@ const ArrowBox: CSSProperties = {
   right: '15px',
 }
 
-function Input({countryVal, setModal, setAlertItem, setStateVal, stateVal, setCityVal, cityVal}: CountryProps) {
-  const [countryName, setCountryName] = useState('');
+function Input({
+  countryVal, 
+  setModal, 
+  setAlertItem, 
+  setStateVal, 
+  stateVal, 
+  setCityVal, 
+  cityVal,
+  email,
+  setEmail,
+  countryName,
+  setCountryName,
+  stateName,
+  setStateName,
+  cityName,
+  setCityName,
+  submitForm,
+  flagIcon,
+  setFlagIcon
+}: CountryProps) {
+
   const [country, setCountry] = useState(false);
   const [state, setState] = useState(false);
   const [city, setCity] = useState(false);
-  const [email, setEmail] = useState('');
-  const [flagIcon, setFlagIcon] = useState('');
-  const [stateName, setStateName] = useState('');
-  const [cityName, setCityName] = useState('');
+ 
+  
 
   function emailBox() {
     setEmail('example@gmail.com');
@@ -89,6 +118,12 @@ function Input({countryVal, setModal, setAlertItem, setStateVal, stateVal, setCi
     else if (email !== '') {
       setCountry(true);
     }
+    if (state === true) {
+      setState(false);
+    }
+    if (city === true) {
+      setCity(false);
+    }
   }
 
   function stateList() {
@@ -98,6 +133,12 @@ function Input({countryVal, setModal, setAlertItem, setStateVal, stateVal, setCi
     }
     else if (flagIcon !== '') {
       setState(true);
+    }
+    if (country === true) {
+      setCountry(false);
+    }
+    if (city === true) {
+      setCity(false);
     }
   }
 
@@ -109,21 +150,17 @@ function Input({countryVal, setModal, setAlertItem, setStateVal, stateVal, setCi
     else if (stateName !== '') {
       setCity(true);
     }
-  }
-
-  function submitForm() {
-    if (cityName === '') {
-      setModal(true);
-      setAlertItem('Choose a City to continue');
+    if (country === true) {
+      setCountry(false);
     }
-    else if (cityName !== '') {
-
-    
+    if (state === true) {
+      setState(false);
     }
   }
 
 
   function selectCountry(e: any) {
+    setFlagIcon(Loading);
     setCountry(false);
     setCountryName(e.target.textContent);
 
@@ -153,10 +190,10 @@ function Input({countryVal, setModal, setAlertItem, setStateVal, stateVal, setCi
   function selectState(e: any) {
     setStateName(e.target.textContent);
     setState(false);
-    fetch('https://countriesnow.space/api/v0.1/countries/cities', {
+    fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({country: `${countryName}`, state: `${e.target.textContent}`})
+      body: JSON.stringify({"country": `${countryName}`, "state": `${e.target.textContent}`})
     })
     .then(response => response.json())
     .then(data => {

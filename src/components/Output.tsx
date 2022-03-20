@@ -1,9 +1,15 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useEffect, useState } from 'react';
 import Text from '../styles/Text';
 import Container from '../styles/Container';
 import Flexbox from '../styles/Flexbox';
 import Close from '../img/close.svg';
 import Pen from '../img/pen.svg';
+
+interface OutputProps {
+  setNewEntry: any,
+  newEntry: number,
+  open: boolean,
+}
 
 const line = {
   height: '1px',
@@ -24,7 +30,8 @@ const Width: CSSProperties = {
   justifyContent: 'space-between',
 }
 
-function Output() {
+function Output({setNewEntry, newEntry, open}: OutputProps) {
+
   const Array = [
     {id: 1, title: 'Email'},
     {id: 2, title: 'Country'},
@@ -32,12 +39,16 @@ function Output() {
     {id: 4, title: "City"}
   ];
 
-  const Values = [
-    {id: 1},
-    {id: 2},
-    {id: 3}, 
-    {id: 4}
-  ];
+  var contacts: any[] = [];
+
+  useEffect(() => {
+    var entryBox: any = localStorage.getItem("allEntries");
+    contacts = JSON.parse(entryBox);
+
+    if (contacts !== null) {
+      console.log(contacts);
+    }
+  }, [open]);
 
   return (
     <Container margin='0% 0% 15% 0%' width='70%' padding='5%' Bigwidth='35%' Bigmargin='0%' Landwidth='80%'>
@@ -56,17 +67,26 @@ function Output() {
           ))}
         </Flexbox>
         <div style={Width}>
-          <Flexbox style={Width} justify='space-between' align='center' direction='row' Landdirect='row'>
-            {Values.map(item => (
-              <Text size='13px' align='left' weight='400' theme={true} Bigsize='20px' key={item.id}>
-                 - -
+          {open && contacts.map(contact => (
+            <Flexbox key={contact.id} style={Width} justify='space-between' align='center' direction='row' Landdirect='row'>
+              <Text size='13px' align='left' weight='400' theme={true} Bigsize='20px'>
+                 {contact.email}
               </Text>
-            ))}
-          </Flexbox>
-          <div>
-            <img src={Pen} alt='Edit icon' style={Icons} />
-            <img src={Close} alt='Delete icon' style={Icons} />
-          </div>
+              <Text size='13px' align='left' weight='400' theme={true} Bigsize='20px'>
+                {contact.country}
+              </Text>
+              <Text size='13px' align='left' weight='400' theme={true} Bigsize='20px'>
+                {contact.state}
+              </Text>
+              <Text size='13px' align='left' weight='400' theme={true} Bigsize='20px'>
+                {contact.city}
+              </Text>
+              <div>
+                <img src={Pen} alt='Edit icon' style={Icons} />
+                <img src={Close} alt='Delete icon' style={Icons} />
+              </div>
+            </Flexbox>
+          ))}
         </div>
         
       </Flexbox>

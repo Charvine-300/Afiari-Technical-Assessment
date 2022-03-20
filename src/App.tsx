@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import Flexbox from './styles/Flexbox';
 import Decor from './decor.png';
 
+
 const BackImage = styled(Flexbox)`
   width: 100vw;
   height: 100%;
@@ -31,24 +32,67 @@ const BackImage = styled(Flexbox)`
 function App() {
   const [modal, setModal] = useState(false);
   const [stateVal, setStateVal]: any = useState();
-  const [cityVal, setCityVal]: any = useState();
   const [alertItem, setAlertItem] = useState('');
   const [countryVal, setCountryVal] = useState([]);
+  const [cityVal, setCityVal]: any = useState();
+  const [stateName, setStateName] = useState('');
+  const [cityName, setCityName] = useState('');
+  const [email, setEmail] = useState('');
+  const [countryName, setCountryName] = useState('');
+  const [flagIcon, setFlagIcon] = useState('');
+  const [newEntry, setNewEntry] = useState(0);
+  const [ID, setID] = useState(0);
+  const [open, setOpen] = useState(false);
   
-
+  
   useEffect(() => {
+    //Fetching list of countries in the world
     axios.get('https://countriesnow.space/api/v0.1/countries/flag/images')
     .then(response => {
       console.log(response.data.data);
       setCountryVal(response.data.data);
     })
-    
-    /*axios.get(' https://countriesnow.space/api/v0.1/countries/state/cities')
-    .then(response => {
-      console.log(response.data.data);
-      setCityVal(response.data.data);
-    })*/
   }, []);
+  
+  
+  function submitForm() {
+    if (cityName === '') {
+      //Open Modal for City
+      setModal(true);
+      setAlertItem('Choose a City to continue');
+    }
+    else if (cityName !== '') {
+      var contactInfo;
+      
+      // Parse any JSON previously stored in allEntries
+      var entryBox: any = localStorage.getItem("allEntries");
+      contactInfo = JSON.parse(entryBox);
+      if(contactInfo == null) {
+        contactInfo = [];
+      }
+
+      var contact = {
+        email: email,
+        country: countryName,
+        state: stateName,
+        city: cityName,
+        id: setID(() => ID + 1),
+      }
+      localStorage.setItem("entry", JSON.stringify(contact));
+
+      // Save allEntries back to local storage
+      contactInfo.push(contact);
+      console.log(contactInfo);
+      localStorage.setItem("allEntries", JSON.stringify(contactInfo));
+
+      //Cleaning out the form for new entries
+      setEmail('');
+      setCountryName('');
+      setStateName('');
+      setCityName('');
+      setFlagIcon('');
+    }
+  }
 
 
 
@@ -65,8 +109,19 @@ function App() {
           stateVal={stateVal} 
           setCityVal={setCityVal}
           cityVal={cityVal}
+          email={email}
+          setEmail={setEmail}
+          countryName={countryName}
+          setCountryName={setCountryName}
+          stateName={stateName}
+          setStateName={setStateName}
+          cityName={cityName}
+          setCityName={setCityName}
+          submitForm={submitForm}
+          flagIcon={flagIcon}
+          setFlagIcon={setFlagIcon}
         />
-        <Output />
+        <Output setNewEntry={setNewEntry} newEntry={newEntry} open={open}  />
       </BackImage>
     </div>
   );

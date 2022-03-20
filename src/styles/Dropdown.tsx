@@ -3,7 +3,8 @@ import styled from 'styled-components'
 
 const Dropdown = styled.div`
   width: 120px;
-  height: 100px;
+  height: fit-content;
+  max-height: 100px;
   overflow-x: hidden;
   overflow-y: scroll;
   padding: 20px 0px 20px 20px;
