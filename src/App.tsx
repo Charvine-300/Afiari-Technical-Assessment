@@ -42,14 +42,12 @@ function App() {
   const [flagIcon, setFlagIcon] = useState('');
   const [newEntry, setNewEntry] = useState(0);
   const [ID, setID] = useState(0);
-  const [open, setOpen] = useState(false);
   
   
   useEffect(() => {
     //Fetching list of countries in the world
     axios.get('https://countriesnow.space/api/v0.1/countries/flag/images')
     .then(response => {
-      console.log(response.data.data);
       setCountryVal(response.data.data);
     })
   }, []);
@@ -82,8 +80,8 @@ function App() {
 
       // Save allEntries back to local storage
       contactInfo.push(contact);
-      console.log(contactInfo);
       localStorage.setItem("allEntries", JSON.stringify(contactInfo));
+      setNewEntry(newEntry + 1);
 
       //Cleaning out the form for new entries
       setEmail('');
@@ -91,6 +89,7 @@ function App() {
       setStateName('');
       setCityName('');
       setFlagIcon('');
+      
     }
   }
 
@@ -121,7 +120,7 @@ function App() {
           flagIcon={flagIcon}
           setFlagIcon={setFlagIcon}
         />
-        <Output setNewEntry={setNewEntry} newEntry={newEntry} open={open}  />
+        <Output newEntry={newEntry} />
       </BackImage>
     </div>
   );
