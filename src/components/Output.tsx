@@ -1,14 +1,13 @@
-import React, { CSSProperties, useEffect, useState } from 'react';
+import React, { CSSProperties, useEffect, useRef } from 'react';
 import Text from '../styles/Text';
 import Container from '../styles/Container';
 import Flexbox from '../styles/Flexbox';
 import Close from '../img/close.svg';
 import Pen from '../img/pen.svg';
+import { info } from 'console';
 
 interface OutputProps {
-  setNewEntry: any,
-  newEntry: number,
-  open: boolean,
+  newEntry: number
 }
 
 const line = {
@@ -26,11 +25,12 @@ const Icons: CSSProperties = {
 
 const Width: CSSProperties = {
   width: '100%',
+  height: '100%',
   display: 'inline-flex',
   justifyContent: 'space-between',
 }
 
-function Output({setNewEntry, newEntry, open}: OutputProps) {
+function Output({ newEntry }: OutputProps) {
 
   const Array = [
     {id: 1, title: 'Email'},
@@ -39,16 +39,18 @@ function Output({setNewEntry, newEntry, open}: OutputProps) {
     {id: 4, title: "City"}
   ];
 
-  var contacts: any[] = [];
+  var contacts: {email: string, country: string, state: string, city: string}[] = [];
+  var infoList = useRef([]);
 
   useEffect(() => {
     var entryBox: any = localStorage.getItem("allEntries");
-    contacts = JSON.parse(entryBox);
+    infoList.current = JSON.parse(entryBox);
+    contacts = infoList.current
 
     if (contacts !== null) {
       console.log(contacts);
     }
-  }, [open]);
+  }, [newEntry]);
 
   return (
     <Container margin='0% 0% 15% 0%' width='70%' padding='5%' Bigwidth='35%' Bigmargin='0%' Landwidth='80%'>
@@ -67,10 +69,10 @@ function Output({setNewEntry, newEntry, open}: OutputProps) {
           ))}
         </Flexbox>
         <div style={Width}>
-          {open && contacts.map(contact => (
-            <Flexbox key={contact.id} style={Width} justify='space-between' align='center' direction='row' Landdirect='row'>
+          {contacts.map(contact => (
+            <Flexbox key={contact.country} style={Width} justify='space-between' align='center' direction='row' Landdirect='row'>
               <Text size='13px' align='left' weight='400' theme={true} Bigsize='20px'>
-                 {contact.email}
+                 {contact.email} Dreaming no more
               </Text>
               <Text size='13px' align='left' weight='400' theme={true} Bigsize='20px'>
                 {contact.country}
