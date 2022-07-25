@@ -8,6 +8,10 @@ import Flexbox from './styles/Flexbox';
 import Decor from './decor.png';
 
 
+const Hide: CSSProperties = {
+  display: 'none',
+}
+
 const BackImage = styled(Flexbox)`
   width: 100vw;
   height: 100%;
@@ -30,6 +34,7 @@ const BackImage = styled(Flexbox)`
 }
 
 function App() {
+  const [display, setDisplay] = useState(Hide);
   const [modal, setModal] = useState(false);
   const [stateVal, setStateVal]: any = useState();
   const [alertItem, setAlertItem] = useState('');
@@ -42,9 +47,14 @@ function App() {
   const [flagIcon, setFlagIcon] = useState('');
   const [newEntry, setNewEntry] = useState(0);
   const [ID, setID] = useState(0);
+  const [entries, setEntries] = useState([]);
   
   
   useEffect(() => {
+    var profileBox: any = localStorage.getItem("allEntries");
+    var profileInfo = JSON.parse(profileBox);
+    setEntries(profileInfo);
+
     //Fetching list of countries in the world
     axios.get('https://countriesnow.space/api/v0.1/countries/flag/images')
     .then(response => {
@@ -74,7 +84,7 @@ function App() {
         country: countryName,
         state: stateName,
         city: cityName,
-        id: setID(() => ID + 1),
+        id: ID,
       }
       localStorage.setItem("entry", JSON.stringify(contact));
 
@@ -89,7 +99,13 @@ function App() {
       setStateName('');
       setCityName('');
       setFlagIcon('');
-      
+      setDisplay(Hide);
+
+      //Getting item from localStorage for display
+      const profiles: any = localStorage.getItem("allEntries");
+      const parsedProfiles = JSON.parse(profiles);
+      setEntries(parsedProfiles);
+      console.log(entries);
     }
   }
 
@@ -98,7 +114,7 @@ function App() {
   return (
     <div style={Wrapper}>
       {modal && <Modal alertItem={alertItem} setModal={setModal} />}
-      <BackImage justify='space-around' align='center' direction='column' Landdirect='column'>
+      <BackImage wrap="wrap" justify='space-around' align='center' direction='column' Landdirect='column'>
         <
           Input 
           countryVal={countryVal} 
@@ -119,8 +135,15 @@ function App() {
           submitForm={submitForm}
           flagIcon={flagIcon}
           setFlagIcon={setFlagIcon}
+          display={display}
+          setDisplay={setDisplay}
+          ID={ID}
+          setID={setID}
         />
-        <Output newEntry={newEntry} />
+        <Output 
+          newEntry={newEntry}
+          entries={entries}
+        />
       </BackImage>
     </div>
   );

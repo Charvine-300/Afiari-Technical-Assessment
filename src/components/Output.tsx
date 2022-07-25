@@ -1,13 +1,13 @@
-import React, { CSSProperties, useEffect, useRef } from 'react';
+import React, { CSSProperties } from 'react';
 import Text from '../styles/Text';
 import Container from '../styles/Container';
 import Flexbox from '../styles/Flexbox';
 import Close from '../img/close.svg';
 import Pen from '../img/pen.svg';
-import { info } from 'console';
 
 interface OutputProps {
   newEntry: number
+  entries: any,
 }
 
 const line = {
@@ -26,11 +26,12 @@ const Icons: CSSProperties = {
 const Width: CSSProperties = {
   width: '100%',
   height: '100%',
+  flexWrap: 'wrap',
   display: 'inline-flex',
   justifyContent: 'space-between',
 }
 
-function Output({ newEntry }: OutputProps) {
+function Output({ newEntry, entries }: OutputProps) {
 
   const Array = [
     {id: 1, title: 'Email'},
@@ -39,18 +40,6 @@ function Output({ newEntry }: OutputProps) {
     {id: 4, title: "City"}
   ];
 
-  var contacts: {email: string, country: string, state: string, city: string}[] = [];
-  var infoList = useRef([]);
-
-  useEffect(() => {
-    var entryBox: any = localStorage.getItem("allEntries");
-    infoList.current = JSON.parse(entryBox);
-    contacts = infoList.current
-
-    if (contacts !== null) {
-      console.log(contacts);
-    }
-  }, [newEntry]);
 
   return (
     <Container margin='0% 0% 15% 0%' width='70%' padding='5%' Bigwidth='35%' Bigmargin='0%' Landwidth='80%'>
@@ -58,8 +47,8 @@ function Output({ newEntry }: OutputProps) {
         Contact List
       </Text>
       <div style={line}></div>
-      <Flexbox justify='space-around' align='center' direction='column' Landdirect='column'>
-        <Flexbox style={Width} justify='space-between' align='center' direction='row' Landdirect='row'>
+      <Flexbox wrap="wrap" justify='space-around' align='center' direction='column' Landdirect='column'>
+        <Flexbox style={Width} wrap="wrap" justify='space-between' align='center' direction='row' Landdirect='row'>
           {Array.map(item => (
             <div key={item.id}> 
               <Text size='15px' align='left' weight='400' theme={false} Bigsize='20px'>
@@ -69,19 +58,19 @@ function Output({ newEntry }: OutputProps) {
           ))}
         </Flexbox>
         <div style={Width}>
-          {contacts.map(contact => (
-            <Flexbox key={contact.country} style={Width} justify='space-between' align='center' direction='row' Landdirect='row'>
-              <Text size='13px' align='left' weight='400' theme={true} Bigsize='20px'>
-                 {contact.email} Dreaming no more
+          {entries.map((profile: any)  => (
+            <Flexbox key={profile.id} style={Width} wrap="wrap" justify='space-around' align='center' direction='row' Landdirect='row'>
+              <Text size='5px' align='left' weight='400' theme={true} Bigsize='10px'>
+                 {profile.email}
               </Text>
-              <Text size='13px' align='left' weight='400' theme={true} Bigsize='20px'>
-                {contact.country}
+              <Text size='5px' align='left' weight='400' theme={true} Bigsize='10px'>
+                {profile.country}
               </Text>
-              <Text size='13px' align='left' weight='400' theme={true} Bigsize='20px'>
-                {contact.state}
+              <Text size='5px' align='left' weight='400' theme={true} Bigsize='10px'>
+                {profile.state}
               </Text>
-              <Text size='13px' align='left' weight='400' theme={true} Bigsize='20px'>
-                {contact.city}
+              <Text size='5px' align='left' weight='400' theme={true} Bigsize='10px'>
+                {profile.city}
               </Text>
               <div>
                 <img src={Pen} alt='Edit icon' style={Icons} />

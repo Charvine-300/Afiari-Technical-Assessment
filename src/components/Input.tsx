@@ -38,8 +38,13 @@ interface CountryProps {
   submitForm: any,
   flagIcon: string,
   setFlagIcon: any,
+  display: any,
+  setDisplay: any,
+  ID: number,
+  setID: any,
 }
 
+//Styles for the component
 const Titles: CSSProperties = {
   margin: '5px 0px',
 };
@@ -97,9 +102,14 @@ function Input({
   setCityName,
   submitForm,
   flagIcon,
-  setFlagIcon
+  setFlagIcon,
+  display,
+  setDisplay,
+  ID,
+  setID
 }: CountryProps) {
 
+ 
   const [country, setCountry] = useState(false);
   const [state, setState] = useState(false);
   const [city, setCity] = useState(false);
@@ -160,6 +170,7 @@ function Input({
 
 
   function selectCountry(e: any) {
+    setDisplay(Flag);
     setFlagIcon(Loading);
     setCountry(false);
     setCountryName(e.target.textContent);
@@ -188,7 +199,7 @@ function Input({
   }
 
   function selectState(e: any) {
-    setStateName(e.target.textContent);
+    setStateName("Loading...");
     setState(false);
     fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
       method: 'POST',
@@ -199,11 +210,13 @@ function Input({
     .then(data => {
       console.log(data)
       setCityVal(data.data);
+      setStateName(e.target.textContent);
     })
   }
 
   function selectCity(e: any) {
     setCityName(e.target.textContent);
+    setID(ID + 1);
     setCity(false);
   }
 
@@ -239,7 +252,7 @@ function Input({
           <Text style={Titles} size='13px' align='left' weight='600' theme={false} Bigsize='13px'>
             Country
           </Text>
-          <img src={flagIcon} style={Flag} alt={flagIcon} />
+          <img src={flagIcon} style={display} alt={flagIcon} />
         </div>
         <div style={InputForm}>
           {

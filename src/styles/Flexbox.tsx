@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 interface FlexboxProps {
+    wrap: string,
     justify: string,
     align: string,
     direction: string,
@@ -9,8 +10,8 @@ interface FlexboxProps {
 
 const Flexbox = styled.div<FlexboxProps>`
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: ${props => props.justify};
+  flex-wrap: ${props => props.wrap || 'nowrap'};
+  justify-content: ${props => props.justify || 'center'};
   align-items: ${props => props.align};
   flex-direction: ${props => props.direction};
 
