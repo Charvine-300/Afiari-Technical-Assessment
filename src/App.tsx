@@ -47,13 +47,19 @@ function App() {
   const [flagIcon, setFlagIcon] = useState('');
   const [newEntry, setNewEntry] = useState(0);
   const [ID, setID] = useState(0);
-  const [entries, setEntries] = useState([]);
+  const [entries, setEntries] = useState<any>([]);
   
   
   useEffect(() => {
     var profileBox: any = localStorage.getItem("allEntries");
     var profileInfo = JSON.parse(profileBox);
-    setEntries(profileInfo);
+    if (profileInfo !== null) {
+      setEntries(profileInfo);
+    }
+
+    else {
+      setEntries([{email: 'example@gmail.com', country: 'Nigeria', state: 'Lagos', city: 'Ikeja', id: 1}]);
+    }
 
     //Fetching list of countries in the world
     axios.get('https://countriesnow.space/api/v0.1/countries/flag/images')

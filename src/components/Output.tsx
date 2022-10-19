@@ -2,8 +2,6 @@ import React, { CSSProperties } from 'react';
 import Text from '../styles/Text';
 import Container from '../styles/Container';
 import Flexbox from '../styles/Flexbox';
-import Close from '../img/close.svg';
-import Pen from '../img/pen.svg';
 
 interface OutputProps {
   newEntry: number
@@ -15,12 +13,6 @@ const line = {
   flexWidth: '100%',
   margin: '15px 0px',
   backgroundColor: '#C5C3C3',
-}
-
-const Icons: CSSProperties = {
-  width: '10px',
-  height: '10px',
-  margin:  '0px 10px',
 }
 
 const Width: CSSProperties = {
@@ -72,10 +64,6 @@ function Output({ newEntry, entries }: OutputProps) {
               <Text size='5px' align='left' weight='400' theme={true} Bigsize='10px'>
                 {profile.city}
               </Text>
-              <div>
-                <img src={Pen} alt='Edit icon' style={Icons} />
-                <img src={Close} alt='Delete icon' style={Icons} />
-              </div>
             </Flexbox>
           ))}
         </div>
